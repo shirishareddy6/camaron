@@ -1,0 +1,81 @@
+/* ── Design Tokens — Light Orange Theme ────────────────────────────────────── */
+:root {
+  /* Brand */
+  --orange:        #e8621a;
+  --orange-light:  #f07c38;
+  --orange-dim:    rgba(232, 98, 26, 0.12);
+  --orange-glow:   rgba(232, 98, 26, 0.25);
+  --amber:         #f5a623;
+  --amber-light:   #ffc444;
+  --teal:          #0d9488;
+  --teal-light:    #14b8a6;
+
+  /* Surface */
+  --bg-primary:    #fdf8f4;
+  --bg-secondary:  #fff5ee;
+  --bg-card:       #ffffff;
+  --bg-input:      #fff9f5;
+  --bg-sidebar:    #1a0f08;
+  --bg-sidebar2:   #240f04;
+
+  /* Borders */
+  --border:        rgba(232, 98, 26, 0.2);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-card:   rgba(232, 98, 26, 0.15);
+
+  /* Text */
+  --text-primary:   #1a0f08;
+  --text-secondary: #4a2c1a;
+  --text-muted:     #8a6552;
+  --text-on-dark:   #ffffff;
+  --text-on-orange: #ffffff;
+
+  /* Status */
+  --success:  #16a34a;
+  --warning:  #d97706;
+  --error:    #dc2626;
+  --info:     #0284c7;
+
+  /* Layout */
+  --sidebar-w: 240px;
+  --nav-h:     64px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Shadows */
+  --shadow-sm:     0 1px 3px rgba(232,98,26,0.08);
+  --shadow-md:     0 4px 16px rgba(232,98,26,0.12);
+  --shadow-lg:     0 12px 40px rgba(232,98,26,0.18);
+  --shadow-orange: 0 8px 28px rgba(232,98,26,0.35);
+
+  --transition: all 0.25s ease;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.truncate { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: rgba(232,98,26,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; border-radius: var(--radius-sm); }
