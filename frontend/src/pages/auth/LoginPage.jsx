@@ -7,27 +7,32 @@ import styles from './LoginPage.module.css';
 
 const RESEND_SECS = 60;
 
+const normalizePhone = (raw) => {
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length === 10) return '+91' + digits;
+  if (digits.length === 12 && digits.startsWith('91')) return '+' + digits;
+  if (digits.startsWith('+')) return raw.trim();
+  return '+' + digits;
+};
+
 export default function LoginPage() {
-  const dispatch  = useDispatch();
-  const navigate  = useNavigate();
-  const auth      = useSelector(selectAuth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const auth     = useSelector(selectAuth);
 
-  const [phone, setPhone]     = useState('');
-  const [otp,   setOtp]       = useState('');
-  const [timer, setTimer]     = useState(0);
-  const [errors, setErrors]   = useState({});
+  const [phone,  setPhone]  = useState('');
+  const [otp,    setOtp]    = useState('');
+  const [timer,  setTimer]  = useState(0);
+  const [errors, setErrors] = useState({});
 
-  // Auto-redirect after login
   useEffect(() => {
     if (auth.isAuthenticated && auth.user) {
       const dest = auth.user.role === 'admin' ? '/admin'
-                 : auth.user.role === 'vendor' ? '/vendor'
-                 : '/farmer';
+                 : auth.user.role === 'vendor' ? '/vendor' : '/farmer';
       navigate(dest, { replace: true });
     }
   }, [auth.isAuthenticated, auth.user, navigate]);
 
-  // Countdown timer for resend
   useEffect(() => {
     if (timer <= 0) return;
     const id = setInterval(() => setTimer((t) => t - 1), 1000);
@@ -36,36 +41,25 @@ export default function LoginPage() {
 
   useEffect(() => { dispatch(clearError()); }, [dispatch]);
 
-  const validatePhone = () => {
-    if (!phone.trim()) return 'Phone number is required';
-    if (!/^\+?[1-9]\d{9,14}$/.test(phone.replace(/\s/g, '')))
-      return 'Enter a valid phone number (e.g. +919876543210)';
-    return null;
-  };
-
   const handleSendOTP = async () => {
-    const err = validatePhone();
-    if (err) { setErrors({ phone: err }); return; }
+    if (!phone.trim()) { setErrors({ phone: 'Phone number is required' }); return; }
     setErrors({});
-    const result = await dispatch(sendOTP(phone.trim()));
+    const normalized = normalizePhone(phone);
+    const result = await dispatch(sendOTP(normalized));
     if (!result.error) setTimer(RESEND_SECS);
   };
 
   const handleVerify = async () => {
     if (otp.length !== 6) { setErrors({ otp: 'Enter the 6-digit OTP' }); return; }
     setErrors({});
-    await dispatch(verifyOTP({ phone: phone.trim(), otp }));
+    const normalized = normalizePhone(phone);
+    await dispatch(verifyOTP({ phone: normalized, otp }));
   };
 
-  const handleBack = () => {
-    dispatch(resetOtp());
-    setOtp('');
-    setErrors({});
-  };
+  const handleBack = () => { dispatch(resetOtp()); setOtp(''); setErrors({}); };
 
   return (
     <div className={styles.page}>
-      {/* Left panel */}
       <div className={styles.left}>
         <div className={styles.brand}>
           <div className={styles.logoMark}>C</div>
@@ -91,19 +85,19 @@ export default function LoginPage() {
         <div className={styles.wave} />
       </div>
 
-      {/* Right panel */}
       <div className={styles.right}>
         <div className={styles.card}>
           {!auth.otpSent ? (
             <>
               <h2 className={styles.cardTitle}>Sign In / Register</h2>
-              <p className={styles.cardSub}>Enter your mobile number to receive a one-time password.</p>
-
+              <p className={styles.cardSub}>
+                Enter your mobile number. For demo, use OTP <strong>121212</strong> after sending.
+              </p>
               <div className={styles.form}>
                 <Input
                   label="Mobile Number"
                   type="tel"
-                  placeholder="+91 98765 43210"
+                  placeholder="9876543210 or +919876543210"
                   value={phone}
                   onChange={(e) => { setPhone(e.target.value); setErrors({}); }}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendOTP()}
@@ -111,23 +105,13 @@ export default function LoginPage() {
                   prefix="📱"
                   autoFocus
                 />
-
                 {auth.error && <p className={styles.apiError}>{auth.error}</p>}
-
-                <Button
-                  fullWidth
-                  size="lg"
-                  loading={auth.loading}
-                  onClick={handleSendOTP}
-                >
+                <Button fullWidth size="lg" loading={auth.loading} onClick={handleSendOTP}>
                   Send OTP
                 </Button>
               </div>
-
               <p className={styles.terms}>
-                By continuing you agree to our{' '}
-                <a href="/terms">Terms of Service</a> and{' '}
-                <a href="/privacy">Privacy Policy</a>.
+                By continuing you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.
               </p>
             </>
           ) : (
@@ -135,9 +119,9 @@ export default function LoginPage() {
               <button className={styles.backBtn} onClick={handleBack}>← Back</button>
               <h2 className={styles.cardTitle}>Verify OTP</h2>
               <p className={styles.cardSub}>
-                We sent a 6-digit code to <strong>{phone}</strong>
+                Enter the 6-digit code sent to <strong>{phone}</strong>.<br />
+                <span style={{ color: 'var(--orange)', fontWeight: 600 }}>Demo OTP: 121212</span>
               </p>
-
               <div className={styles.form}>
                 <Input
                   label="One-Time Password"
@@ -145,7 +129,7 @@ export default function LoginPage() {
                   inputMode="numeric"
                   pattern="[0-9]*"
                   maxLength={6}
-                  placeholder="• • • • • •"
+                  placeholder="1 2 1 2 1 2"
                   value={otp}
                   onChange={(e) => { setOtp(e.target.value.replace(/\D/g, '')); setErrors({}); }}
                   onKeyDown={(e) => e.key === 'Enter' && handleVerify()}
@@ -153,27 +137,15 @@ export default function LoginPage() {
                   autoFocus
                   className={styles.otpInput}
                 />
-
                 {auth.error && <p className={styles.apiError}>{auth.error}</p>}
-
-                <Button
-                  fullWidth
-                  size="lg"
-                  loading={auth.loading}
-                  onClick={handleVerify}
-                >
+                <Button fullWidth size="lg" loading={auth.loading} onClick={handleVerify}>
                   Verify & Login
                 </Button>
-
                 <div className={styles.resend}>
                   {timer > 0 ? (
-                    <span className={styles.timerText}>Resend OTP in {timer}s</span>
+                    <span className={styles.timerText}>Resend in {timer}s</span>
                   ) : (
-                    <button
-                      className={styles.resendBtn}
-                      onClick={handleSendOTP}
-                      disabled={auth.loading}
-                    >
+                    <button className={styles.resendBtn} onClick={handleSendOTP} disabled={auth.loading}>
                       Resend OTP
                     </button>
                   )}

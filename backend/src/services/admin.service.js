@@ -169,8 +169,25 @@ const listAllOrders = async ({ status, page = 1, limit = 20 } = {}) => {
   };
 };
 
+
+const createUser = async ({ phone, name, role, email }) => {
+  const { rows: existing } = await query('SELECT id FROM users WHERE phone = $1', [phone]);
+  if (existing.length) throw new Error('A user with this phone already exists');
+  const { rows } = await query(
+    `INSERT INTO users (phone, name, role, email) VALUES ($1,$2,$3,$4) RETURNING id, phone, name, role, email, created_at`,
+    [phone, name, role, email || null]
+  );
+  const user = rows[0];
+  if (role === 'farmer') {
+    await query('INSERT INTO farmer_profiles (user_id) VALUES ($1)', [user.id]);
+  } else if (role === 'vendor') {
+    await query(`INSERT INTO vendor_profiles (user_id, business_name) VALUES ($1,$2)`, [user.id, name]);
+  }
+  return user;
+};
+
 module.exports = {
   getOverview, getMonthlyRevenue, getTopProducts,
   listUsers, setUserStatus, setUserRole, verifyVendor,
-  listAllOrders,
+  listAllOrders, createUser,
 };
