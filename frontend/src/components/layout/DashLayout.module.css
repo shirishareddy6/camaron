@@ -1,0 +1,201 @@
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.25s ease;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.sidebarClosed .sidebar { width: 64px; }
+.sidebarOpen   .sidebar { width: var(--sidebar-w); }
+
+.sidebarLogo {
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 900;
+  color: var(--ocean-deep);
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(0,180,160,0.35);
+}
+
+.logoText {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+.nav {
+  flex: 1;
+  padding: 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.navItem:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+}
+
+.navItem.active {
+  background: var(--teal-dim);
+  color: var(--teal-light);
+  border: 1px solid rgba(0,180,160,0.25);
+}
+
+.navIcon { font-size: 18px; flex-shrink: 0; }
+.navLabel { overflow: hidden; }
+
+/* ── Sidebar footer ──────────────────────────────────────────────────────── */
+.sidebarFooter {
+  padding: 12px 8px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.userAvatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--teal-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  color: var(--ocean-deep);
+  flex-shrink: 0;
+}
+
+.userMeta { overflow: hidden; }
+.userName {
+  font-size: 13px; font-weight: 600;
+  color: var(--white);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.userRole {
+  font-size: 11px;
+  color: var(--teal);
+  text-transform: capitalize;
+}
+
+.logoutBtn {
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  transition: var(--transition);
+  text-align: left;
+  white-space: nowrap;
+}
+.logoutBtn:hover { background: rgba(239,68,68,0.1); color: var(--error); }
+
+/* ── Main ────────────────────────────────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: var(--sidebar-w);
+  transition: margin-left 0.25s ease;
+}
+
+.sidebarClosed .main { margin-left: 64px; }
+
+.topbar {
+  height: var(--nav-h);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.menuBtn {
+  color: var(--text-secondary);
+  font-size: 20px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.menuBtn:hover { color: var(--white); background: var(--bg-card); }
+
+.topbarRight { display: flex; align-items: center; gap: 12px; }
+
+.roleBadge {
+  background: var(--teal-dim);
+  border: 1px solid var(--border);
+  color: var(--teal-light);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 50px;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+.content {
+  flex: 1;
+  padding: 28px 32px;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebarOpen .sidebar { transform: translateX(0); }
+  .main { margin-left: 0 !important; }
+  .content { padding: 20px 16px; }
+}

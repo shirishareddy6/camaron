@@ -1,0 +1,46 @@
+# ── Dependencies ─────────────────────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ── Environment secrets — NEVER commit these ─────────────────
+.env
+.env.local
+.env.production
+.env.*.local
+backend/.env
+frontend/.env
+
+# ── Build outputs ─────────────────────────────────────────────
+dist/
+build/
+frontend/dist/
+
+# ── Logs ─────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+
+# ── Testing ───────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Docker ───────────────────────────────────────────────────
+# (docker-compose.yml IS committed; volumes are not)
+
+# ── OS / IDE ─────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# ── SSL certs (managed by certbot on VM) ──────────────────────
+*.pem
+*.key
+*.crt
+
+# ── Misc ──────────────────────────────────────────────────────
+.cache/
+*.tgz

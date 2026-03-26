@@ -1,0 +1,40 @@
+.page { padding-top: var(--nav-h); min-height: 100vh; }
+.loading { display: flex; justify-content: center; align-items: center; height: 60vh; }
+.container { max-width: 1100px; margin: 0 auto; padding: 40px 60px; }
+.back { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 28px; transition: color 0.2s; }
+.back:hover { color: var(--teal); }
+.grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
+.iconBox {
+  width: 72px; height: 72px; border-radius: var(--radius-lg);
+  background: rgba(0,180,160,0.1); border: 1px solid rgba(0,180,160,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; margin-bottom: 16px;
+}
+.badge { margin-bottom: 12px; }
+.name {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 700; color: var(--white); margin-bottom: 16px;
+}
+.desc { font-size: 15px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 28px; }
+.featuresTitle { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+.featureItem { display: flex; gap: 10px; font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; }
+.featureCheck { color: var(--teal); font-weight: 700; flex-shrink: 0; }
+.vendorsTitle { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 20px; }
+.noVendors { text-align: center; padding: 32px 20px; color: var(--text-muted); font-size: 14px; }
+.vendorCard {
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: 20px;
+  margin-bottom: 14px; transition: var(--transition);
+}
+.vendorCard:hover { border-color: var(--teal); }
+.vendorName { font-weight: 600; color: var(--white); margin-bottom: 6px; }
+.vendorPrice { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--teal-light); font-weight: 700; }
+.vendorUnit { font-size: 14px; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+.vendorStock { font-size: 12px; margin: 6px 0 4px; }
+.inStock { color: var(--success); }
+.outStock { color: var(--error); }
+.vendorMin { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+.loginCta { margin-top: 20px; text-align: center; }
+.loginLink { font-size: 13px; color: var(--teal); font-weight: 600; }
+.loginLink:hover { text-decoration: underline; }
+@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .container { padding: 28px 20px; } }
